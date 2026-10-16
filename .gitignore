@@ -5,6 +5,7 @@
 .env
 .env.*
 !.env.example
-/tmp/
+!examples/**/.env
+!examples/**/.env.*/tmp/
 /dist/
 *.log
