@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# shkit — small shell toolkit for everyday DevOps chores
+set -euo pipefail
+
+SHKIT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=/dev/null
+source "${SHKIT_ROOT}/lib/common.sh"
+
+usage() {
+	cat <<EOF
+$(colors::print "$BOLD_CYAN" "shkit")  ${SHKIT_VERSION}  — everyday shell toolkit
+
+$(colors::print "$YELLOW" "Usage")
+  shkit <command> [options]
+
+$(colors::print "$YELLOW" "Commands")
+  env       Compare .env with .env.example
+  ports     Watch listening TCP/UDP ports
+  rename    Batch-rename files (prefix/suffix/ext/regex)
+  json      Validate & pretty-print JSON (needs jq)
+  version   Show version
+  help      Show this help
+
+$(colors::print "$YELLOW" "Examples")
+  shkit env
+  shkit env -e .env.prod -x .env.example
+  shkit ports -i 3
+  shkit rename --dry-run --prefix "img_" *.png
+  shkit json -f payload.json
+  echo '{"ok":true}' | shkit json
+
+$(colors::print "$YELLOW" "Docs")
+  https://github.com/mrvi0/shkit
+EOF
+}
+
+banner() {
+	cat <<'EOF'
+      _     _    _ _
+  ___| |__ | | _(_) |_
+ / __| '_ \| |/ / | __|
+ \__ \ | | |   <| | |_
+ |___/_| |_|_|\_\_|\__|
+EOF
+}
+
+cmd="${1:-help}"
+shift || true
+
+case "$cmd" in
+	-h | --help | help)
+		banner
+		echo
+		usage
+		;;
+	-v | --version | version)
+		echo "shkit ${SHKIT_VERSION}"
+		;;
+	env | ports | rename | json)
+		# shellcheck source=/dev/null
+		source "${SHKIT_ROOT}/cmd/${cmd}.sh"
+		"cmd_${cmd}" "$@"
+		;;
+	*)
+		ui::err "Unknown command: ${cmd}"
+		echo
+		usage
+		exit 1
+		;;
+esac

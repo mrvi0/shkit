@@ -1,0 +1,10 @@
+*.swp
+*.swo
+*~
+.DS_Store
+.env
+.env.*
+!.env.example
+/tmp/
+/dist/
+*.log
