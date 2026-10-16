@@ -22,6 +22,12 @@ echo "shkit smoke tests"
 assert "version" bash -c "\"$SHKIT\" version | grep -q shkit"
 assert "help" bash -c "\"$SHKIT\" help | grep -q Commands"
 assert "env detects drift" bash -c "! \"$SHKIT\" env \"$ROOT/examples/env\""
+assert "env --json" bash -c "
+	out=\$(\"$SHKIT\" env --json \"$ROOT/examples/env\" || true)
+	printf '%s' \"\$out\" | grep -q '\"ok\": false'
+	printf '%s' \"\$out\" | grep -q '\"DEBUG\"'
+	command -v jq >/dev/null && printf '%s' \"\$out\" | jq -e '.summary.missing == 1' >/dev/null
+"
 assert "json pretty" bash -c "\"$SHKIT\" json -q -f \"$ROOT/examples/sample.json\" | grep -q shkit"
 assert "rename dry-run" bash -c "
 	tmpdir=\$(mktemp -d)

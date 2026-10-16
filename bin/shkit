@@ -24,6 +24,7 @@ $(colors::print "$YELLOW" "Commands")
 $(colors::print "$YELLOW" "Examples")
   shkit env
   shkit env -e .env.prod -x .env.example
+  shkit env --json
   shkit ports -i 3
   shkit rename --dry-run --prefix "img_" *.png
   shkit json -f payload.json

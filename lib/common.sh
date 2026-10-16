@@ -12,7 +12,7 @@ source "${SHKIT_LIB_DIR}/validation.sh"
 
 logging::init
 
-SHKIT_VERSION="0.1.0"
+SHKIT_VERSION="0.2.0"
 
 ui::header()  { colors::print "$BOLD_CYAN" "$1"; }
 ui::ok()      { colors::success "$1"; }

@@ -12,7 +12,7 @@ _shkit() {
 
 	case "${COMP_WORDS[1]}" in
 	env)
-		COMPREPLY=($(compgen -W "-e --env -x --example -h --help" -- "$cur"))
+		COMPREPLY=($(compgen -W "-e --env -x --example -j --json -h --help" -- "$cur"))
 		;;
 	ports)
 		COMPREPLY=($(compgen -W "-i --interval -o --once -h --help" -- "$cur"))

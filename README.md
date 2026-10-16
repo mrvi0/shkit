@@ -82,6 +82,7 @@ shkit version
 # catch .env drift before deploy
 shkit env
 shkit env -e .env.prod -x .env.example
+shkit env --json          # CI / scripts
 
 # one-shot or watch
 shkit ports --once
@@ -106,9 +107,24 @@ shkit json -f payload.json --info
 shkit env [options] [directory]
   -e, --env FILE        .env path
   -x, --example FILE    .env.example path
+  -j, --json            machine-readable JSON
 ```
 
 Exit `1` when anything differs — CI-friendly.
+
+`--json` shape:
+
+```json
+{
+  "env": ".env",
+  "example": ".env.example",
+  "ok": false,
+  "missing": ["DEBUG"],
+  "extra": ["SECRET_KEY"],
+  "mismatched": [{"key":"APP_PORT","env":"8080","example":"3000"}],
+  "summary": {"missing":1,"extra":1,"mismatched":1}
+}
+```
 
 ### `ports`
 
